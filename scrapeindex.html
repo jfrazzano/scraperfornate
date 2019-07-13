@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <link rel="stylesheet" type="text/css" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/301628/fc-dashboard.css">
+         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.10.0/codemirror.css">
+         <link rel="stylesheet" type="text/css" href="https://cdn.firebase.com/libs/firepad/1.3.0/firepad.css">
+        
+    </head>
+    <body>
+
+        <style id="style2" scoped>
+            -webkit-scrollbar{
+                display: none; }
+            ms-overflow-style{ display:none;}
+            fc-console-menu-1{
+                background: orange;
+            }
+
+            .main{
+                position: relative;
+                display: block;
+            }
+            fc-drawer.rightDrawer{
+                position: absolute;
+                right: -25px;
+                top: -10px;
+                bottom: -10px;
+                box-shadow: 3px 5px 24px 9px #0a0a0a;
+                width: 26px; 
+                background: white;
+                display: block;
+                z-index: 12;
+                    display: block;
+                
+            }
+            fc-drawer.leftdrawer{
+                position: absolute;
+                display: block;
+                left: -25px;
+                top: -10px;
+                bottom: -10px;
+                box-shadow: 3px 5px 24px 9px #0f0f0f;
+                width: 28px; 
+                background: white;
+                z-index: 12;
+                
+                
+            }
+            fc-vertical-column.verticalcolumn{
+                position: relative;
+            }
+            img{padding: 0px;margin: 0px; cursor: crosshair;}
+            .lamemenubutton{
+                position: fixed; margin-top: 22px; right: 64px; z-index:124!important;
+            }
+            .rowtwoicon{
+            background: transparent transparent transparent; margin:0; font-size: 1.45em; margin-left: 1px; top: 0px;z-index:12!important; padding-top: 0px; margin-top:28px; position: fixed;cursor:pointer;}
+             .rowoneicon{
+                background: transparent transparent transparent; margin:0; font-size: 1.45em; margin-left: 1px; top: 36px;z-index:12!important; left: 68px; padding-top: 0px; margin-top:-2px; position: fixed;cursor:pointer;
+            } 
+            fc-pcontinuation{
+                display: block;
+            }
+            .fc-header{
+
+                border-bottom: 2px solid #00a;
+                box-shadow: 2px 4px 5px 3px #0a0a0a;
+            }
+            .focusedball{
+                margin-top: 12px; 
+                box-shadow: 1px 4px 6px 2px #4f4f4f; 
+                margin-left: 29%;
+                border-radius: 222px;
+                align-items: center;
+                
+            }
+            .focusedball:active{
+                    margin-top: 16px;
+                box-shadow: 0 0 1px 0 #4f4f4f; 
+                border-radius: 222px;
+                
+            }
+            fc-header.bottom{
+                width: 100vw;
+                position: fixed;
+                height: 34px;
+                padding: 0px;
+                border-top: #00a solid 6px;
+                background: aliceblue;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                z-index: 10;
+                -webkit-transition-timing-function: ease;
+                transition-timing-function: ease;
+                    cubic-bezier(0.1, 0.7, 1.0, 0.1); 
+                      -webkit-transition:height 1.2s, opacity 1.2s;
+                  transition: height 1.2s,opacity 1.2s;
+            }
+
+            fc-header.bottom.faded{
+                height: 6px;
+                opacity: .01;
+                
+                  -webkit-transition:height 2s, opacity 2s;
+                  transition: height 2s,opacity 2s;
+                       -webkit-transition-timing-function: ease;
+                transition-timing-function: ease;
+                
+            }
+
+            fc-header.top{
+                width: 103vw;
+                display: flex;
+                padding: 16px;
+                align-items: flex-start;
+                position: fixed;
+                margin-bottom: 12px;
+                border-bottom: #00a solid 2px;
+                background:white;
+                top: -8px;
+                right: -109px;
+                left: -10px;
+                opacity: 1;
+                z-index: 9;
+                cursor: n-resize;
+                  -webkit-transition:height 2s, opacity 2s;
+                transition: height 2s,opacity 2s;
+                    -webkit-transition-timing-function: ease;
+                transition-timing-function: ease;
+            }
+            fc-row.leftdrawer{
+                overflow-x: hidden;
+                max-width: 440px;
+                display: block;
+                object-fit: contain;
+
+                
+            }
+            fc-header.top.leftdrawer{
+                width: 88%;
+                display:flex-start;
+                right: 0px;
+                padding: 40px 0px 18px 20px;
+                align-items: left;
+                position: absolute;
+                margin-bottom: 12px;
+                border-bottom: #00a solid 2px;
+                background:white;
+                top: -8px;
+                left: -10px;
+                opacity: 1;
+                object-fit: contain;
+            }
+            img.leftdrawer{
+                position: absolute;
+                display: inline-block;
+                object-fit: contain;
+                padding-left: 25px;
+                padding-top: 1px;
+            /*  display: none; */
+                
+            }
+            .blurbtip{
+                z-index: 10;
+            }
+            .blurbwrapper{
+                z-index:10;
+                position: fixed; 
+                right: 12%; 
+                top:32px;
+            }
+            .blurbtiptext{z-index:10;}
+            fc-header.top.faded{
+                padding-bottom: 2px;
+                height: 10px;
+                opacity: .01;
+                margin: 2px 0 0 0;
+                border-bottom:2px #00A solid;
+                cursor:s-resize;
+                    z-index:14;
+                
+                  -webkit-transition:height 2s, opacity 2s;
+                  transition: height 2s,opacity 2s;
+                       -webkit-transition-timing-function: ease;
+                transition-timing-function: ease;
+                
+            }
+            fc-drawer{
+                object-fit: contain;
+            }
+            #ddrtoolbar{
+                position: fixed;
+                height: 54px;
+                min-width: 140px;
+                width: 12%;
+                max-width: 92vw;
+                padding:0px;    
+                background:#FFFFE0;
+                border: 4px silver ridge;
+                z-index:50;
+                bottom: 74px;
+                right: 60px;
+                overflow: hidden;
+                overflow-x: scroll;
+                font-size: 14px;
+                display: block;
+            }
+            #passageSelector{
+                position: absolute;
+                top: 18px;
+                max-width: 420px;
+                left: 48px;
+                
+                
+            }
+
+            img{    margin-bottom: 6px;
+                box-shadow: 1px 4px 6px 2px #4f4a4c; 
+                
+            }
+            img:active{
+                margin-bottom: 1px;
+                box-shadow: 0 0 1px 0 #4f4f4f; 
+
+                
+            }
+            #ddrtoolbar>ul{
+                padding: 0px;
+            }
+            textarea{
+                
+                max-height: 400px;
+                overflow-y: scroll;
+                max-width: 450px; 
+            }
+
+            .main{
+                padding: 24px 6px;
+                margin: 24px 0px 12px 0px;
+
+            }
+
+
+            #myInput {
+              
+                background-position: 10px 12px; /* Position the search icon */
+                background-repeat: no-repeat; /* Do not repeat the icon image */
+                width: 100%; /* Full-width */
+                font-size: 16px; /* Increase font-size */
+                padding: 12px 20px 12px 40px; /* Add some padding */
+                border: 1px solid #ddd; /* Add a grey border */
+                margin-bottom: 12px; /* Add some space below the input */
+            }
+
+            #myUL {
+                /* Remove default list styling */
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #myUL li a {
+                border: 1px solid #ddd; /* Add a border to all links */
+                margin-top: -1px; /* Prevent double borders */
+                background-color: #f6f6f6; /* Grey background color */
+                padding: 12px; /* Add some padding */
+                text-decoration: none; /* Remove default text underline */
+                font-size: 18px; /* Increase the font-size */
+                color: black; /* Add a black text color */
+                display: block; /* Make it into a block element to fill the whole list */
+            }
+
+            #myUL li a.header {
+                background-color: #e2e2e2; /* Add a darker background color for headers */
+                cursor: default; /* Change cursor style */
+            }
+
+            #myUL li a:hover:not(.header) {
+                background-color: #eee; /* Add a hover effect to all links, except for headers */
+            }
+            .fclogo{
+                margin-top: 12px; 
+                box-shadow: 1px 4px 6px 2px #4f4f4f; 
+                margin-left: 2%;
+                align-items: left;
+                align-self:contain;
+                
+            }
+        </style>
+        <div id="selectholder" name="selectorHolder" style=" width: 100%; position: fixed; left: 12px; top: 16px; max-width: 340px; z-index:11;"></div>
+        <fc-focused-dashboard id="dash" style="position: absolute; top: 0; right: 0; left: 0; bottom: -10px; border: 8px silver solid;" class="layout horizontal block">
+                <fc-drag-toolbar id="ddrtoolbar" data-btn="dragtarget" draggable resizable class="layout horizontal center flex block">
+                </fc-drag-toolbar>
+                <div class="container lamemenubutton"  id="lameMenuButton" data-btn="fromTop">
+                        <div data-btn="fromTop" class="bar1"></div>
+                        <div data-btn="fromTop" class="bar2"></div>
+                        <div data-btn="fromTop" class="bar3"></div>
+                </div>
+                <section style="" class="rowoneicon">&#x2699; </section>    
+                <fc-drawer id="leftdrawer" class="container vertical layout block flex leftdrawer" style="position: absolute; overflow-x: hidden;">
+                    <fc-header class="top leftdrawer layout vertical flex left-justified">
+                        <fc-row class="layout horizontal flex left-justified leftdrawer" style="margin: 12px 0;  z-index: inherit;">
+                            <a>
+                            <img style="top: 40px; left: 4px; box-shadow: 0 0 0 0 white; max-height: 80px;  z-index:1; width: 240px; display: block; position: absolute;" class="layout block vertical leftdrawer" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/301628/FC_frontpage_logo.png">
+                            </a>
+                        </fc-row>
+                    </fc-header>
+                </fc-drawer>
+                <div id="columnholder" class="vertical layout block verticalcolumn">
+                    <fc-header class="top layout horizontal flex center center-justified fc-header" id="header">    
+                        <fc-row class="layout horizontal flex center" style=" width: 57%; margin: 12px;margin-left: 120px; max-width: 448px;">
+                            <fc-flexbox class="vertical layout flex-2 center-justified">
+                                <a style="position: absolute; margin 22px;">
+                                    <img data-btn="getCurrentFromFirepad" class="focusedball" height="40px" width="40px" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/301628/ball.png">
+                                </a>
+                             </fc-flexbox>
+                        </fc-row>
+                    </fc-header>
+                    <fc-container id="dashboard" class="main">
+                    </fc-container>
+                    <fc-header class="bottom"  id="footer">
+                    </fc-header>
+                </div>
+                <fc-drawer id="rightdrawer" class="vertical layout block rightDrawer">
+                </fc-drawer>
+        
+        </fc-focused-dashboard>
+        <fc-console-menu-1 class="flex dashboardHelperMenu">
+            </fc-console-menu-1>
+        <fc-console-menu-1>
+        </fc-console-menu-1> 
+        <div id="dropdownMenuGeneral1" style="position: fixed; max-height: 529px; width: 22vw; min-height: 380px; height: 100%; border: 3px solid silver; z-index: 6; overflow-y:scroll;display: flex; flex-flow: column; align-self: stretch; align-content: center; justify-content: space-between; overflow-x:hidden; background: #efefef;" class="vertical layout flex self-stretch" data-prefix="xrq_" hidden>
+        </div>
+        <script src="templatestrings.js"></script>
+        
+        <script src="helper.js"></script>
+        
+        <script type="text/javascript" src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.10.0/codemirror.js"></script>
+        <script src="https://cdn.firebase.com/libs/firepad/1.3.0/firepad.min.js"></script>
+        
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/301628/dictionary_data.js"></script>
+        <script id="finalscript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/301628/dashboard_copy.js">   
+        </script>       
+
+<script>
+
+var http = require('http');
+var fs = require('fs');
+var path = require('path');
+var request = require('request');
+
+var text;
+var t2; 
+
+http.createServer(function (request_, response_) {
+
+function Scraper(olddictionary,words){
+        this.durl=(word)=>`https://www.thefreedictionary.com/${word}`;
+        this.turl=(word)=>`https://www.freethesaurus.com/${word}`;
+        this.def=this.defHTML("ambivalent");
+        this.syn=this.synHTML("ambivalent");
+        console.log(this);
+        //this.entries=new Set(olddictionary);
+}
+Scraper.prototype.defHTML=function(word){
+    let url=this.durl(word);        
+   let t= request(url,function(error, response, html){
+            text= html.toString();
+            text='<p>'.concat(text.slice(text.indexOf("<title"),text.indexOf("<base"))).replace(`- definition of ${word} by The Free Dictionary`,"");
+            let textArr= text.replace("title","strong").replace("title","strong").split("<meta");
+            if(textArr!==undefined&&textArr[1]!==undefined){
+                let offset= textArr[1]!==undefined?Math.floor(`English dictionary definition of ${word}`.split("").length + textArr[1].indexOf(`English dictionary definition of ${word}`)):0; 
+                textArr[1]= textArr[1].slice(offset).replace('">','</p>');
+                text=textArr.join("");
+            }
+            return text;
+        });
+    return text;
+}
+Scraper.prototype.synHTML=function(word){
+    let url=this.turl(word);      
+    request(url, 
+        function(error, response, html){
+            t2= html.toString();
+            t2='<p>'.concat(t2.slice(t2.indexOf("<title"),t2.indexOf("<base")).toLowerCase().replace(`${word} synonyms, ${word} antonyms - freethesaurus.com`,"Synonyms: "));
+            let textArr= t2.replace("title","i").replace("title","i").split("<meta");
+            if(textArr!==undefined&&textArr[1]!==undefined){
+                let offset= `${word}:`.split("").length + textArr[1].indexOf(`${word}:`); 
+                textArr[1]= textArr[1].slice(offset).replace('">','</p>');
+                t2=textArr.join("");
+                t2=t2.slice(0,t2.indexOf("...."));
+            }
+            return t2;
+        });
+    return t2;
+}
+
+
+var sc=new Scraper();
+var content=sc.defHTML("ambivalent");
+if (content!==undefined){
+    let holder=sc.synHTML("ambivalent");
+    content=content.concat(holder);}
+//console.log(content, "content");
+console.log(sc);
+//console.log("request", request_.url)
+   // Set the response HTTP header with HTTP status and Content type
+   response_.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+   response_.end(content);
+}).listen(3000);
+</script>
+
+
+</body>
+</html>
+
+//console.log('Server running at http://127.0.0.1:3000/');
+
+
+/*
+http.createServer(function (request, response) {
+    console.log('request:',request.url);
+
+    var filePath = '.' + request.url;
+    if (filePath == './') {
+        filePath = './index.html';
+    }
+
+    var extname = String(path.extname(filePath)).toLowerCase();
+    var contentType = 'text/html';
+    var mimeTypes = {
+        '.html': 'text/html',
+        '.js': 'text/javascript',
+        '.css': 'text/css',
+        '.json': 'application/json',
+        '.png': 'image/png',
+        '.jpg': 'image/jpg',
+        '.gif': 'image/gif',
+        '.wav': 'audio/wav',
+        '.mp4': 'video/mp4',
+        '.woff': 'application/font-woff',
+        '.ttf': 'application/font-ttf',
+        '.eot': 'application/vnd.ms-fontobject',
+        '.otf': 'application/font-otf',
+        '.svg': 'application/image/svg+xml'
+    };
+
+    contentType = mimeTypes[extname] || 'application/octet-stream';
+
+    fs.readFile(filePath, function(error, content) {
+        if (error) {
+            if(error.code == 'ENOENT'){
+                fs.readFile('./404.html', function(error, content) {
+                    response.writeHead(200, { 'Content-Type': contentType });
+                    response.end(content, 'utf-8');
+                });
+            }
+            else {
+                response.writeHead(500);
+                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
+                response.end();
+            }
+        }
+        else {
+            response.writeHead(200, { 'Content-Type': contentType });
+            response.end(content, 'utf-8');
+        }
+    });
+}).listen(8125);
+console.log('Server running at http://127.0.0.1:8125/');
+*/
